@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on ~/nderim</title>
+    <link>https://yourhandle.dev/categories/security/</link>
+    <description>Recent content in Security on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploiting SSRF in a modern cloud environment</title>
+      <link>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</guid>
+      <description>&lt;p&gt;During a recent engagement I found an SSRF vulnerability that looked&#xA;boring on the surface — internal HTTP request, filtered output, no&#xA;obvious pivot path. Forty minutes later I had IAM credentials with&#xA;&lt;code&gt;iam:PassRole&lt;/code&gt;. Here&amp;rsquo;s exactly how it unfolded.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>HTB — reversing a custom VM in 3 hours</title>
+      <link>https://yourhandle.dev/blog/htb-vm-reversing/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/htb-vm-reversing/</guid>
+      <description>&lt;p&gt;The challenge binary implemented a 16-instruction stack VM in ~800 lines&#xA;of C. The flag was encrypted and stored as VM bytecode. My job: reverse&#xA;the ISA, write an emulator in Python, then work backwards from the&#xA;encrypted output to the key.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>portscanner</title>
+      <link>https://yourhandle.dev/portfolio/portscanner/</link>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/portfolio/portscanner/</guid>
+      <description>&lt;p&gt;A fast, async port scanner with service fingerprinting. Scans 65k ports&#xA;in under a second on a LAN, outputs structured JSON, and identifies&#xA;services without sending exploit traffic.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>hexplore</title>
+      <link>https://yourhandle.dev/portfolio/hexplore/</link>
+      <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/portfolio/hexplore/</guid>
+      <description>&lt;p&gt;&lt;code&gt;hexplore&lt;/code&gt; is the hex-viewer component extracted from a larger binary&#xA;analysis tool. Drop a file on the embed above to inspect it in the&#xA;browser — offset navigation, ASCII panel, and basic struct annotation.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

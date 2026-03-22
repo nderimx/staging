@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tui on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/tui/</link>
+    <description>Recent content in Tui on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 10 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/tui/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hexplore</title>
+      <link>https://yourhandle.dev/portfolio/hexplore/</link>
+      <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/portfolio/hexplore/</guid>
+      <description>&lt;p&gt;&lt;code&gt;hexplore&lt;/code&gt; is the hex-viewer component extracted from a larger binary&#xA;analysis tool. Drop a file on the embed above to inspect it in the&#xA;browser — offset navigation, ASCII panel, and basic struct annotation.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

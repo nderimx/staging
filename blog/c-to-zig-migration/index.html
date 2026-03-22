@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-us" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d14">
+
+<title>Why I ported my TUI tools from C to Zig &mdash; ~/nderim</title>
+  <meta name="description" content="Comptime, build ergonomics, and no hidden allocations. The migration that was actually worth it.">
+<meta property="og:type"        content="article">
+<meta property="og:title"       content="Why I ported my TUI tools from C to Zig">
+<meta property="og:description" content="Comptime, build ergonomics, and no hidden allocations. The migration that was actually worth it.">
+<meta property="og:url"         content="https://yourhandle.dev/blog/c-to-zig-migration/">
+<meta property="og:site_name"   content="~/nderim">
+
+<link rel="canonical" href="https://yourhandle.dev/blog/c-to-zig-migration/">
+<link rel="stylesheet" href="/css/main.min.css">
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" onerror="this.remove()">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#9670;</text></svg>">
+
+</head>
+<body>
+  <nav class="nav" aria-label="Site navigation">
+  <a class="nav__logo" href="/">
+    <em>~/</em>nderim<em class="cursor">_</em>
+  </a>
+
+  <ul class="nav__links">
+    <li><a href="/portfolio/">portfolio</a></li>
+    <li><a href="/blog/">blog</a></li>
+    <li><a href="/about/">about</a></li>
+    <li><a href="/contact/">contact</a></li>
+  </ul>
+
+  <div class="nav__actions">
+    <button class="nav__search-btn" data-search-open aria-label="Search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+    </button>
+    <button class="nav__theme-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="8" cy="8" r="3"/>
+        <line x1="8"  y1="1"  x2="8"  y2="3"/>
+        <line x1="8"  y1="13" x2="8"  y2="15"/>
+        <line x1="1"  y1="8"  x2="3"  y2="8"/>
+        <line x1="13" y1="8"  x2="15" y2="8"/>
+        <line x1="3"  y1="3"  x2="4.4" y2="4.4"/>
+        <line x1="11.6" y1="11.6" x2="13" y2="13"/>
+        <line x1="11.6" y1="4.4"  x2="13"   y2="3"/>
+        <line x1="3"    y1="13"   x2="4.4"  y2="11.6"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="display:none">
+        <path d="M13 10.5A6 6 0 016 3.5a6 6 0 100 9 6 6 0 007-2z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+  <div class="site-wrap">
+    
+<main class="container">
+  <div class="breadcrumb">
+    <a href="/">~</a> /
+    <a href="/blog/">blog</a> /
+    Why I ported my TUI tools from C to Zig
+  </div>
+
+  <article class="article" data-pagefind-body>
+    <header class="article__header">
+      <time class="article__date" datetime="2025-08-30">2025-08-30</time>
+      <h1 class="article__title">Why I ported my TUI tools from C to Zig</h1>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:.5rem">Comptime, build ergonomics, and no hidden allocations. The migration that was actually worth it.</p>
+      <div class="article__tags">
+          <a class="tag" href="/tags/zig/">Zig</a>
+          <a class="tag" href="/tags/c/">C</a>
+          <a class="tag" href="/tags/tooling/">Tooling</a>
+          <a class="tag" href="/tags/devlog/">Devlog</a>
+      </div>
+        <div style="font-size:.5625rem;color:var(--t3);margin-top:.5rem">2 min read</div>
+    </header>
+
+    <div class="article__content">
+      <p>I spent three years writing TUI tools in C. I&rsquo;m not going back. Zig
+gives me everything C does — direct memory control, no runtime, single
+binary output — plus a build system that doesn&rsquo;t make me want to quit
+programming.</p>
+<h2 id="what-i-was-doing-in-c">what I was doing in C</h2>
+<p>My TUI toolkit was about 4k lines of C spread across a handful of
+tools: a hex viewer, a log tailer, and a process inspector. They shared
+a small rendering layer I called <code>termbox.c</code> — basically a manual
+implementation of the parts of ncurses I actually used.</p>
+<p>The pain points were all in the build system and the allocator story.
+<code>make</code> is fine until you have cross-compilation targets, and tracking
+allocations manually across tools that share a library got old fast.</p>
+<h2 id="what-zig-gives-me-instead">what Zig gives me instead</h2>
+<p><strong>Comptime</strong> replaces most of my C preprocessor usage. Instead of
+<code>#define COLS 80</code> and a thousand <code>#ifdef PLATFORM_LINUX</code> guards, I
+write:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-zig" data-lang="zig"><span class="line"><span class="cl"><span class="kr">const</span><span class="w"> </span><span class="n">platform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">@import</span><span class="p">(</span><span class="s">&#34;builtin&#34;</span><span class="p">).</span><span class="n">os</span><span class="p">.</span><span class="n">tag</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span><span class="w"> </span><span class="n">default_cols</span><span class="p">:</span><span class="w"> </span><span class="kt">u16</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">platform</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">.</span><span class="n">windows</span><span class="p">)</span><span class="w"> </span><span class="mi">120</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p><strong>The allocator pattern</strong> means I can write a function once and the
+caller decides whether it heap-allocates, arena-allocates, or uses a
+fixed buffer:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-zig" data-lang="zig"><span class="line"><span class="cl"><span class="kr">pub</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">renderLine</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="kt">u8</span><span class="p">,</span><span class="w"> </span><span class="n">allocator</span><span class="p">:</span><span class="w"> </span><span class="n">std</span><span class="p">.</span><span class="n">mem</span><span class="p">.</span><span class="n">Allocator</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">:</span><span class="w"> </span><span class="n">Row</span><span class="p">)</span><span class="w"> </span><span class="o">!</span><span class="p">[]</span><span class="kt">u8</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kr">var</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="p">.</span><span class="nf">ArrayList</span><span class="p">(</span><span class="kt">u8</span><span class="p">).</span><span class="nf">init</span><span class="p">(</span><span class="n">allocator</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">out</span><span class="p">.</span><span class="nf">toOwnedSlice</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p><strong><code>zig build</code></strong> is just a Zig program. Cross-compiling to
+<code>aarch64-linux-musl</code> is one flag.</p>
+<h2 id="what-i-gave-up">what I gave up</h2>
+<p>Error messages. Zig&rsquo;s are improving but a complex comptime failure
+still produces output that requires two cups of coffee and a quiet room
+to decode. C&rsquo;s errors are worse on average but the ceiling is lower.</p>
+<p>The migration took about two weekends. The resulting tools are
+marginally slower to compile and significantly easier to maintain. Good
+trade.</p>
+    </div>
+    <nav style="display:flex;justify-content:space-between;padding:1.5rem 0;border-top:1px solid var(--bd);margin-top:1.5rem" aria-label="Post navigation">
+      <div>
+          <div style="font-size:.5625rem;color:var(--t3);margin-bottom:4px">&larr; older</div>
+          <a class="post-row__title" href="/blog/htb-vm-reversing/">HTB — reversing a custom VM in 3 hours</a>
+      </div>
+      <div style="text-align:right">
+      </div>
+    </nav>
+  </article>
+</main>
+
+  </div>
+
+  <footer class="site-footer">
+  <span class="footer-left">~/nderim &mdash; Hugo &amp; terminal-neon</span>
+  <div class="footer-right">
+    
+    <a class="rss-link" href="/index.xml">rss</a>
+      <a href="https://github.com/nderimx" target="_blank" rel="noopener">src</a>
+  </div>
+</footer>
+
+  <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-box">
+    <div class="search-input-row">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="grep -r 'query' ./site"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+    <div id="search-results" role="listbox" aria-label="Search results">
+      <p class="search-empty">start typing to search posts &amp; projects</p>
+    </div>
+  </div>
+</div>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/search.js" defer></script>
+</body>
+</html>

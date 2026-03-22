@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Htb on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/htb/</link>
+    <description>Recent content in Htb on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB — reversing a custom VM in 3 hours</title>
+      <link>https://yourhandle.dev/blog/htb-vm-reversing/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/htb-vm-reversing/</guid>
+      <description>&lt;p&gt;The challenge binary implemented a 16-instruction stack VM in ~800 lines&#xA;of C. The flag was encrypted and stored as VM bytecode. My job: reverse&#xA;the ISA, write an emulator in Python, then work backwards from the&#xA;encrypted output to the key.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

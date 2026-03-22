@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on ~/nderim</title>
+    <link>https://yourhandle.dev/blog/</link>
+    <description>Recent content in Blogs on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploiting SSRF in a modern cloud environment</title>
+      <link>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</guid>
+      <description>&lt;p&gt;During a recent engagement I found an SSRF vulnerability that looked&#xA;boring on the surface — internal HTTP request, filtered output, no&#xA;obvious pivot path. Forty minutes later I had IAM credentials with&#xA;&lt;code&gt;iam:PassRole&lt;/code&gt;. Here&amp;rsquo;s exactly how it unfolded.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Building a zero-dep CLI arg parser in Go</title>
+      <link>https://yourhandle.dev/blog/zero-dep-arg-parser-go/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/zero-dep-arg-parser-go/</guid>
+      <description>&lt;p&gt;Every CLI tool I write starts the same way: add cobra, watch the binary&#xA;balloon to 8 MB, spend twenty minutes fighting its init magic, regret&#xA;everything. So I wrote a 200-line arg parser I&amp;rsquo;ve now copied into six&#xA;projects and never touched again.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>HTB — reversing a custom VM in 3 hours</title>
+      <link>https://yourhandle.dev/blog/htb-vm-reversing/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/htb-vm-reversing/</guid>
+      <description>&lt;p&gt;The challenge binary implemented a 16-instruction stack VM in ~800 lines&#xA;of C. The flag was encrypted and stored as VM bytecode. My job: reverse&#xA;the ISA, write an emulator in Python, then work backwards from the&#xA;encrypted output to the key.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why I ported my TUI tools from C to Zig</title>
+      <link>https://yourhandle.dev/blog/c-to-zig-migration/</link>
+      <pubDate>Sat, 30 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/c-to-zig-migration/</guid>
+      <description>&lt;p&gt;I spent three years writing TUI tools in C. I&amp;rsquo;m not going back. Zig&#xA;gives me everything C does — direct memory control, no runtime, single&#xA;binary output — plus a build system that doesn&amp;rsquo;t make me want to quit&#xA;programming.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-us" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d14">
+
+<title>Building a zero-dep CLI arg parser in Go &mdash; ~/nderim</title>
+  <meta name="description" content="Design of a minimal, composable argument parser — no cobra, no viper, no surprises.">
+<meta property="og:type"        content="article">
+<meta property="og:title"       content="Building a zero-dep CLI arg parser in Go">
+<meta property="og:description" content="Design of a minimal, composable argument parser — no cobra, no viper, no surprises.">
+<meta property="og:url"         content="https://yourhandle.dev/blog/zero-dep-arg-parser-go/">
+<meta property="og:site_name"   content="~/nderim">
+
+<link rel="canonical" href="https://yourhandle.dev/blog/zero-dep-arg-parser-go/">
+<link rel="stylesheet" href="/css/main.min.css">
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" onerror="this.remove()">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#9670;</text></svg>">
+
+</head>
+<body>
+  <nav class="nav" aria-label="Site navigation">
+  <a class="nav__logo" href="/">
+    <em>~/</em>nderim<em class="cursor">_</em>
+  </a>
+
+  <ul class="nav__links">
+    <li><a href="/portfolio/">portfolio</a></li>
+    <li><a href="/blog/">blog</a></li>
+    <li><a href="/about/">about</a></li>
+    <li><a href="/contact/">contact</a></li>
+  </ul>
+
+  <div class="nav__actions">
+    <button class="nav__search-btn" data-search-open aria-label="Search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+    </button>
+    <button class="nav__theme-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="8" cy="8" r="3"/>
+        <line x1="8"  y1="1"  x2="8"  y2="3"/>
+        <line x1="8"  y1="13" x2="8"  y2="15"/>
+        <line x1="1"  y1="8"  x2="3"  y2="8"/>
+        <line x1="13" y1="8"  x2="15" y2="8"/>
+        <line x1="3"  y1="3"  x2="4.4" y2="4.4"/>
+        <line x1="11.6" y1="11.6" x2="13" y2="13"/>
+        <line x1="11.6" y1="4.4"  x2="13"   y2="3"/>
+        <line x1="3"    y1="13"   x2="4.4"  y2="11.6"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="display:none">
+        <path d="M13 10.5A6 6 0 016 3.5a6 6 0 100 9 6 6 0 007-2z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+  <div class="site-wrap">
+    
+<main class="container">
+  <div class="breadcrumb">
+    <a href="/">~</a> /
+    <a href="/blog/">blog</a> /
+    Building a zero-dep CLI arg parser in Go
+  </div>
+
+  <article class="article" data-pagefind-body>
+    <header class="article__header">
+      <time class="article__date" datetime="2025-10-21">2025-10-21</time>
+      <h1 class="article__title">Building a zero-dep CLI arg parser in Go</h1>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:.5rem">Design of a minimal, composable argument parser — no cobra, no viper, no surprises.</p>
+      <div class="article__tags">
+          <a class="tag" href="/tags/go/">Go</a>
+          <a class="tag" href="/tags/tooling/">Tooling</a>
+          <a class="tag" href="/tags/devlog/">Devlog</a>
+          <a class="tag" href="/tags/cli/">Cli</a>
+      </div>
+        <div style="font-size:.5625rem;color:var(--t3);margin-top:.5rem">2 min read</div>
+    </header>
+
+    <div class="article__content">
+      <p>Every CLI tool I write starts the same way: add cobra, watch the binary
+balloon to 8 MB, spend twenty minutes fighting its init magic, regret
+everything. So I wrote a 200-line arg parser I&rsquo;ve now copied into six
+projects and never touched again.</p>
+<h2 id="what-i-actually-need">what I actually need</h2>
+<ul>
+<li>Positional args</li>
+<li>Flags with short and long forms (<code>-v</code>, <code>--verbose</code>)</li>
+<li>Subcommands (one level deep is enough)</li>
+<li>Help text generated automatically</li>
+<li>Zero allocations in the hot path</li>
+</ul>
+<p>No config file unmarshalling. No completion scripts. No plugin system.
+Just parse <code>os.Args</code> and get out of the way.</p>
+<h2 id="the-core-type">the core type</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">Parser</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">name</span><span class="w">    </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">flags</span><span class="w">   </span><span class="p">[]</span><span class="nx">Flag</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">args</span><span class="w">    </span><span class="p">[]</span><span class="nx">Arg</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">cmds</span><span class="w">    </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Parser</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">type</span><span class="w"> </span><span class="nx">Flag</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Short</span><span class="w"> </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Long</span><span class="w">  </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Help</span><span class="w">  </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>The <code>Value</code> interface mirrors <code>flag.Value</code> from stdlib, so you can drop
+in <code>flag.Bool</code>, <code>flag.String</code>, etc., or write your own.</p>
+<h2 id="parsing-in-60-lines">parsing in 60 lines</h2>
+<p>The parse loop is a simple state machine: if the token starts with <code>--</code>,
+strip it and look up the flag by long name; if it starts with <code>-</code>, look
+up by short name; otherwise it&rsquo;s either a positional or a subcommand.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Parser</span><span class="p">)</span><span class="w"> </span><span class="nf">Parse</span><span class="p">(</span><span class="nx">args</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">tok</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nx">tok</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#34;--&#34;</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">p</span><span class="p">.</span><span class="nx">positionals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">positionals</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">tok</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;--&#34;</span><span class="p">):</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">name</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">tok</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// ... look up and set flag</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">tok</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;-&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">tok</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">name</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">tok</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// ... short flag</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">default</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">sub</span><span class="p">,</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">cmds</span><span class="p">[</span><span class="nx">tok</span><span class="p">];</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">sub</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">p</span><span class="p">.</span><span class="nx">positionals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">positionals</span><span class="p">,</span><span class="w"> </span><span class="nx">tok</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">i</span><span class="o">++</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="what-i-gave-up">what I gave up</h2>
+<ul>
+<li>Combined short flags (<code>-xvf</code>) — I&rsquo;ve never actually needed this</li>
+<li><code>=</code> syntax (<code>--output=foo</code>) — trivially addable, not worth the
+complexity for now</li>
+<li>Shell completion — generate it yourself from the Flag metadata if
+you need it</li>
+</ul>
+<p>The full thing is 214 lines including the help formatter. It lives in
+<code>internal/flags/</code> in each project. No <code>go get</code>, no indirect deps, no
+mystery.</p>
+<p>The source is in the <a href="https://github.com/handle/clifmt">clifmt repo</a>
+under <code>internal/flags/</code>.</p>
+    </div>
+    <nav style="display:flex;justify-content:space-between;padding:1.5rem 0;border-top:1px solid var(--bd);margin-top:1.5rem" aria-label="Post navigation">
+      <div>
+          <div style="font-size:.5625rem;color:var(--t3);margin-bottom:4px">&larr; older</div>
+          <a class="post-row__title" href="/blog/ssrf-cloud-exploitation/">Exploiting SSRF in a modern cloud environment</a>
+      </div>
+      <div style="text-align:right">
+          <div style="font-size:.5625rem;color:var(--t3);margin-bottom:4px">newer &rarr;</div>
+          <a class="post-row__title" href="/blog/htb-vm-reversing/">HTB — reversing a custom VM in 3 hours</a>
+      </div>
+    </nav>
+  </article>
+</main>
+
+  </div>
+
+  <footer class="site-footer">
+  <span class="footer-left">~/nderim &mdash; Hugo &amp; terminal-neon</span>
+  <div class="footer-right">
+    
+    <a class="rss-link" href="/index.xml">rss</a>
+      <a href="https://github.com/nderimx" target="_blank" rel="noopener">src</a>
+  </div>
+</footer>
+
+  <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-box">
+    <div class="search-input-row">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="grep -r 'query' ./site"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+    <div id="search-results" role="listbox" aria-label="Search results">
+      <p class="search-empty">start typing to search posts &amp; projects</p>
+    </div>
+  </div>
+</div>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/search.js" defer></script>
+</body>
+</html>

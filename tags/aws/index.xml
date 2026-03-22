@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Aws on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/aws/</link>
+    <description>Recent content in Aws on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploiting SSRF in a modern cloud environment</title>
+      <link>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/ssrf-cloud-exploitation/</guid>
+      <description>&lt;p&gt;During a recent engagement I found an SSRF vulnerability that looked&#xA;boring on the surface — internal HTTP request, filtered output, no&#xA;obvious pivot path. Forty minutes later I had IAM credentials with&#xA;&lt;code&gt;iam:PassRole&lt;/code&gt;. Here&amp;rsquo;s exactly how it unfolded.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

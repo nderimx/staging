@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/</link>
+    <description>Recent content in Tags on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Aws</title>
+      <link>https://yourhandle.dev/tags/aws/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/aws/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloud</title>
+      <link>https://yourhandle.dev/tags/cloud/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/cloud/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://yourhandle.dev/tags/security/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Writeup</title>
+      <link>https://yourhandle.dev/tags/writeup/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/writeup/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cli</title>
+      <link>https://yourhandle.dev/tags/cli/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/cli/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Devlog</title>
+      <link>https://yourhandle.dev/tags/devlog/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/devlog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Go</title>
+      <link>https://yourhandle.dev/tags/go/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/go/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tooling</title>
+      <link>https://yourhandle.dev/tags/tooling/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/tooling/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ctf</title>
+      <link>https://yourhandle.dev/tags/ctf/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/ctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Htb</title>
+      <link>https://yourhandle.dev/tags/htb/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/htb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reverse-Engineering</title>
+      <link>https://yourhandle.dev/tags/reverse-engineering/</link>
+      <pubDate>Sun, 14 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/reverse-engineering/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Parser</title>
+      <link>https://yourhandle.dev/tags/parser/</link>
+      <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/parser/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Syntax</title>
+      <link>https://yourhandle.dev/tags/syntax/</link>
+      <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/syntax/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>C</title>
+      <link>https://yourhandle.dev/tags/c/</link>
+      <pubDate>Sat, 30 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/c/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Zig</title>
+      <link>https://yourhandle.dev/tags/zig/</link>
+      <pubDate>Sat, 30 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/zig/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Async</title>
+      <link>https://yourhandle.dev/tags/async/</link>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/async/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Networking</title>
+      <link>https://yourhandle.dev/tags/networking/</link>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/networking/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rust</title>
+      <link>https://yourhandle.dev/tags/rust/</link>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Canvas</title>
+      <link>https://yourhandle.dev/tags/canvas/</link>
+      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/canvas/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Game</title>
+      <link>https://yourhandle.dev/tags/game/</link>
+      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/game/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wasm</title>
+      <link>https://yourhandle.dev/tags/wasm/</link>
+      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/wasm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Binary</title>
+      <link>https://yourhandle.dev/tags/binary/</link>
+      <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/binary/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tui</title>
+      <link>https://yourhandle.dev/tags/tui/</link>
+      <pubDate>Mon, 10 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/tags/tui/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

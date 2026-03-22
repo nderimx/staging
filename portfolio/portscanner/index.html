@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d14">
+
+<title>portscanner &mdash; ~/nderim</title>
+  <meta name="description" content="Async port scanner with service detection, banner grabbing, and structured JSON output. Built in Rust.">
+<meta property="og:type"        content="article">
+<meta property="og:title"       content="portscanner">
+<meta property="og:description" content="Async port scanner with service detection, banner grabbing, and structured JSON output. Built in Rust.">
+<meta property="og:url"         content="https://yourhandle.dev/portfolio/portscanner/">
+<meta property="og:site_name"   content="~/nderim">
+
+<link rel="canonical" href="https://yourhandle.dev/portfolio/portscanner/">
+<link rel="stylesheet" href="/css/main.min.css">
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" onerror="this.remove()">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#9670;</text></svg>">
+
+</head>
+<body>
+  <nav class="nav" aria-label="Site navigation">
+  <a class="nav__logo" href="/">
+    <em>~/</em>nderim<em class="cursor">_</em>
+  </a>
+
+  <ul class="nav__links">
+    <li><a href="/portfolio/">portfolio</a></li>
+    <li><a href="/blog/">blog</a></li>
+    <li><a href="/about/">about</a></li>
+    <li><a href="/contact/">contact</a></li>
+  </ul>
+
+  <div class="nav__actions">
+    <button class="nav__search-btn" data-search-open aria-label="Search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+    </button>
+    <button class="nav__theme-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="8" cy="8" r="3"/>
+        <line x1="8"  y1="1"  x2="8"  y2="3"/>
+        <line x1="8"  y1="13" x2="8"  y2="15"/>
+        <line x1="1"  y1="8"  x2="3"  y2="8"/>
+        <line x1="13" y1="8"  x2="15" y2="8"/>
+        <line x1="3"  y1="3"  x2="4.4" y2="4.4"/>
+        <line x1="11.6" y1="11.6" x2="13" y2="13"/>
+        <line x1="11.6" y1="4.4"  x2="13"   y2="3"/>
+        <line x1="3"    y1="13"   x2="4.4"  y2="11.6"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="display:none">
+        <path d="M13 10.5A6 6 0 016 3.5a6 6 0 100 9 6 6 0 007-2z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+  <div class="site-wrap">
+    
+<main class="container">
+  <div class="breadcrumb">
+    <a href="/">~</a> /
+    <a href="/portfolio/">portfolio</a> /
+    portscanner
+  </div>
+
+  <article class="article" data-pagefind-body>
+    <header class="article__header">
+      <div style="display:flex;align-items:center;gap:.625rem;margin-bottom:.5rem">
+        <h1 class="article__title" style="margin-bottom:0">portscanner</h1>
+          <span class="demo-badge">recording</span>
+      </div>
+        <p style="font-size:.8125rem;color:var(--t2);margin-bottom:.5rem">Async port scanner with service detection, banner grabbing, and structured JSON output. Built in Rust.</p>
+      <div class="article__tags">
+          <a class="tag" href="/tags/rust/">Rust</a>
+          <a class="tag" href="/tags/async/">Async</a>
+          <a class="tag" href="/tags/networking/">Networking</a>
+          <a class="tag" href="/tags/security/">Security</a>
+      </div>
+      <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <a class="btn" href="https://github.com/handle/portscanner" target="_blank" rel="noopener">view source &rarr;</a>
+      </div>
+    </header>
+    <div style="margin-bottom:1.5rem">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.1/dist/bundle/asciinema-player.min.css">
+      <div class="sc-asciinema" style="border-radius:var(--radius);border:1px solid var(--bd);overflow:hidden;">
+        <div style="background:#060810;padding:6px 12px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:5px">
+          <div style="width:9px;height:9px;border-radius:50%;background:#de5d53"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#d4a947"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#52a552"></div>
+          <span style="font-size:.5rem;color:#1e2f47;margin-left:6px;font-family:var(--mono)">portscanner &mdash; 2:31</span>
+        </div>
+        <div id="asc-eeb9de84d1c4b868e62b2804c1c21c4f"></div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.1/dist/bundle/asciinema-player.min.js"></script>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof AsciinemaPlayer === "undefined") return;
+        AsciinemaPlayer.create("\"/casts/portscanner.cast\"", document.getElementById("\"asc-eeb9de84d1c4b868e62b2804c1c21c4f\""), {
+          speed: 1, rows: 20, theme: "monokai",
+          terminalFontFamily: "'JetBrains Mono','Fira Code',monospace",
+          terminalFontSize: "13px",
+        });
+      });
+      </script>
+    </div>
+
+    <div class="article__content">
+      <p>A fast, async port scanner with service fingerprinting. Scans 65k ports
+in under a second on a LAN, outputs structured JSON, and identifies
+services without sending exploit traffic.</p>
+<h2 id="why-another-port-scanner">why another port scanner</h2>
+<p><code>nmap</code> is the right tool for most jobs. I built this one to learn
+<code>tokio</code> properly, and because I wanted machine-readable output that
+piped cleanly into <code>jq</code> without post-processing the nmap XML format.</p>
+<h2 id="features">features</h2>
+<ul>
+<li><strong>Async scanning</strong> — <code>tokio</code> tasks, one per port range shard</li>
+<li><strong>Banner grabbing</strong> — reads the first 512 bytes after connect</li>
+<li><strong>Service fingerprinting</strong> — matches banners against a compact
+signature database (shipped as a single TOML file)</li>
+<li><strong>JSON output</strong> — every field typed and documented</li>
+</ul>
+<h2 id="example-output">example output</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;target&#34;</span><span class="p">:</span> <span class="s2">&#34;10.0.0.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;scan_ms&#34;</span><span class="p">:</span> <span class="mi">340</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nt">&#34;port&#34;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>  <span class="nt">&#34;state&#34;</span><span class="p">:</span> <span class="s2">&#34;open&#34;</span><span class="p">,</span> <span class="nt">&#34;service&#34;</span><span class="p">:</span> <span class="s2">&#34;ssh&#34;</span><span class="p">,</span>   <span class="nt">&#34;banner&#34;</span><span class="p">:</span> <span class="s2">&#34;SSH-2.0-OpenSSH_9.3&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nt">&#34;port&#34;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>  <span class="nt">&#34;state&#34;</span><span class="p">:</span> <span class="s2">&#34;open&#34;</span><span class="p">,</span> <span class="nt">&#34;service&#34;</span><span class="p">:</span> <span class="s2">&#34;http&#34;</span><span class="p">,</span>  <span class="nt">&#34;banner&#34;</span><span class="p">:</span> <span class="s2">&#34;nginx/1.25.3&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nt">&#34;port&#34;</span><span class="p">:</span> <span class="mi">443</span><span class="p">,</span> <span class="nt">&#34;state&#34;</span><span class="p">:</span> <span class="s2">&#34;open&#34;</span><span class="p">,</span> <span class="nt">&#34;service&#34;</span><span class="p">:</span> <span class="s2">&#34;https&#34;</span><span class="p">,</span> <span class="nt">&#34;banner&#34;</span><span class="p">:</span> <span class="kc">null</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="performance">performance</h2>
+<p>Scanning all 65535 ports on a local host:</p>
+<table>
+  <thead>
+      <tr>
+          <th>tool</th>
+          <th>time</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>nmap (SYN)</td>
+          <td>1.8s</td>
+      </tr>
+      <tr>
+          <td>portscanner</td>
+          <td>0.34s</td>
+      </tr>
+      <tr>
+          <td>masscan</td>
+          <td>0.21s</td>
+      </tr>
+  </tbody>
+</table>
+<p>masscan wins on raw speed; portscanner wins on output quality and
+no-root requirement. SYN scanning needs raw socket access; <code>portscanner</code>
+uses async TCP connect so it runs as a normal user.</p>
+<h2 id="install">install</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cargo install portscanner
+</span></span></code></pre></div>
+    </div>
+  </article>
+</main>
+
+  </div>
+
+  <footer class="site-footer">
+  <span class="footer-left">~/nderim &mdash; Hugo &amp; terminal-neon</span>
+  <div class="footer-right">
+    
+    <a class="rss-link" href="/index.xml">rss</a>
+      <a href="https://github.com/nderimx" target="_blank" rel="noopener">src</a>
+  </div>
+</footer>
+
+  <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-box">
+    <div class="search-input-row">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5"/>
+        <line x1="10" y1="10" x2="14.5" y2="14.5"/>
+      </svg>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="grep -r 'query' ./site"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+    <div id="search-results" role="listbox" aria-label="Search results">
+      <p class="search-empty">start typing to search posts &amp; projects</p>
+    </div>
+  </div>
+</div>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/search.js" defer></script>
+</body>
+</html>

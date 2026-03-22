@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Syntax on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/syntax/</link>
+    <description>Recent content in Syntax on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>clifmt</title>
+      <link>https://yourhandle.dev/portfolio/clifmt/</link>
+      <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/portfolio/clifmt/</guid>
+      <description>&lt;p&gt;&lt;code&gt;clifmt&lt;/code&gt; pipes any tool&amp;rsquo;s output through a configurable formatter: syntax&#xA;highlighting, JSON pretty-printing, log-level coloring, and custom regex&#xA;rules — all composable and streaming.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

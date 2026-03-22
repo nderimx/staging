@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tooling on ~/nderim</title>
+    <link>https://yourhandle.dev/categories/tooling/</link>
+    <description>Recent content in Tooling on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 21 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/categories/tooling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a zero-dep CLI arg parser in Go</title>
+      <link>https://yourhandle.dev/blog/zero-dep-arg-parser-go/</link>
+      <pubDate>Tue, 21 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/zero-dep-arg-parser-go/</guid>
+      <description>&lt;p&gt;Every CLI tool I write starts the same way: add cobra, watch the binary&#xA;balloon to 8 MB, spend twenty minutes fighting its init magic, regret&#xA;everything. So I wrote a 200-line arg parser I&amp;rsquo;ve now copied into six&#xA;projects and never touched again.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why I ported my TUI tools from C to Zig</title>
+      <link>https://yourhandle.dev/blog/c-to-zig-migration/</link>
+      <pubDate>Sat, 30 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/blog/c-to-zig-migration/</guid>
+      <description>&lt;p&gt;I spent three years writing TUI tools in C. I&amp;rsquo;m not going back. Zig&#xA;gives me everything C does — direct memory control, no runtime, single&#xA;binary output — plus a build system that doesn&amp;rsquo;t make me want to quit&#xA;programming.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Networking on ~/nderim</title>
+    <link>https://yourhandle.dev/tags/networking/</link>
+    <description>Recent content in Networking on ~/nderim</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://yourhandle.dev/tags/networking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>portscanner</title>
+      <link>https://yourhandle.dev/portfolio/portscanner/</link>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yourhandle.dev/portfolio/portscanner/</guid>
+      <description>&lt;p&gt;A fast, async port scanner with service fingerprinting. Scans 65k ports&#xA;in under a second on a LAN, outputs structured JSON, and identifies&#xA;services without sending exploit traffic.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
